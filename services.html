@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All services — Moniepoint Redesign</title>
+    <!-- Applies saved theme before first paint, so there's no flash of the wrong theme -->
+    <script>
+      (function () {
+        if (localStorage.getItem("moniepoint-theme") === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Icon library: Lucide (https://lucide.dev) — thin-stroke, rounded line icons, MIT licensed -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              base: "rgb(var(--color-base) / <alpha-value>)",
+              panel: "rgb(var(--color-panel) / <alpha-value>)",
+              panel2: "rgb(var(--color-panel2) / <alpha-value>)",
+              stroke: "rgb(var(--color-stroke) / <alpha-value>)",
+              gold: "rgb(var(--color-gold) / <alpha-value>)",
+              mint: "rgb(var(--color-mint) / <alpha-value>)",
+              coral: "rgb(var(--color-coral) / <alpha-value>)",
+              muted: "rgb(var(--color-muted) / <alpha-value>)",
+              text: "rgb(var(--color-text) / <alpha-value>)",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              display: ["Sora", "sans-serif"],
+            },
+            boxShadow: {
+              card: "var(--shadow-card)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --color-base: 10 17 34;
+        --color-panel: 19 28 51;
+        --color-panel2: 24 36 70;
+        --color-stroke: 35 47 82;
+        --color-gold: 245 197 24;
+        --color-mint: 61 214 140;
+        --color-coral: 242 106 90;
+        --color-muted: 139 147 173;
+        --color-text: 255 255 255;
+        --shadow-card: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+      }
+      html[data-theme="light"] {
+        --color-base: 245 246 248;
+        --color-panel: 255 255 255;
+        --color-panel2: 241 243 246;
+        --color-stroke: 226 230 237;
+        --color-gold: 179 138 0;
+        --color-mint: 21 128 61;
+        --color-coral: 217 58 46;
+        --color-muted: 100 108 122;
+        --color-text: 15 23 42;
+        --shadow-card: 0 8px 24px -8px rgba(15, 23, 42, 0.12);
+      }
+      body {
+        -webkit-font-smoothing: antialiased;
+        transition:
+          background-color 0.25s ease,
+          color 0.25s ease;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .nav-active {
+        color: rgb(var(--color-gold));
+      }
+      [data-lucide] {
+        width: 1em;
+        height: 1em;
+      }
+      .chip[data-active="true"] {
+        background: rgb(var(--color-gold));
+        color: #0a1122;
+      }
+      .chip[data-active="false"] {
+        background: rgb(var(--color-panel2));
+        color: rgb(var(--color-muted));
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-base text-text font-sans min-h-screen">
+    <div class="lg:flex lg:min-h-screen">
+      <!-- ============ DESKTOP SIDEBAR (lg+) ============ -->
+      <aside
+        class="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 bg-panel border-r border-stroke px-6 py-8"
+      >
+        <div class="flex items-center gap-2 mb-10">
+          <div
+            class="w-9 h-9 rounded-xl bg-gold flex items-center justify-center text-[#0A1122] font-black"
+          >
+            M
+          </div>
+          <span class="font-display font-bold text-lg tracking-tight"
+            >Moniepoint</span
+          >
+        </div>
+        <nav class="flex flex-col gap-1 text-sm font-medium">
+          <a
+            href="index.html"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted hover:bg-panel2 hover:text-text transition"
+          >
+            <i data-lucide="home" class="w-5 h-5"></i>
+            Home
+          </a>
+          <a
+            href="#"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted hover:bg-panel2 hover:text-text transition"
+          >
+            <i data-lucide="credit-card" class="w-5 h-5"></i>
+            Card
+          </a>
+          <a
+            href="services.html"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-panel2 nav-active"
+          >
+            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+            Services
+          </a>
+          <a
+            href="#"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted hover:bg-panel2 hover:text-text transition"
+          >
+            <i data-lucide="trophy" class="w-5 h-5"></i>
+            Rewards
+          </a>
+        </nav>
+        <div class="mt-auto pt-6 border-t border-stroke">
+          <button
+            id="avatar-btn-desktop"
+            data-panel-trigger="profile"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+            aria-controls="profile-panel"
+            class="flex items-center gap-3 w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-lg p-1 -m-1 group hover:bg-panel2 transition"
+          >
+            <img
+              src="https://api.dicebear.com/9.x/avataaars/svg?seed=Mary-Ifekam&backgroundColor=182446&backgroundType=solid"
+              alt="Uzor Mary Ifekam's profile picture"
+              class="w-9 h-9 rounded-full bg-panel2 shrink-0 object-cover"
+            />
+            <div class="text-xs flex-1 min-w-0">
+              <p class="font-semibold truncate">Uzor Mary Ifekam</p>
+              <p class="text-muted">Level 3</p>
+            </div>
+            <i
+              data-lucide="chevron-right"
+              class="w-3.5 h-3.5 text-muted shrink-0"
+            ></i>
+          </button>
+        </div>
+      </aside>
+
+      <!-- ============ MAIN ============ -->
+      <div class="lg:ml-64 flex-1 flex flex-col">
+        <!-- ---- Mobile top bar ---- -->
+        <header
+          class="lg:hidden relative flex items-center justify-center px-4 pt-4 pb-2"
+        >
+          <div class="absolute left-4">
+            <button
+              id="avatar-btn-mobile"
+              data-panel-trigger="profile"
+              aria-haspopup="dialog"
+              aria-expanded="false"
+              aria-controls="profile-panel"
+              class="flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-full"
+            >
+              <img
+                src="https://api.dicebear.com/9.x/avataaars/svg?seed=Mary-Ifekam&backgroundColor=182446&backgroundType=solid"
+                alt="Uzor Mary Ifekam's profile picture"
+                class="w-9 h-9 rounded-full border border-stroke bg-panel2 object-cover"
+              />
+            </button>
+          </div>
+          <h1 class="font-display font-bold text-[1rem]">All services</h1>
+          <div class="absolute right-4 flex items-center gap-3">
+            <button
+              data-theme-toggle
+              aria-label="Switch theme"
+              class="text-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-full p-1"
+            >
+              <i data-lucide="sun" class="w-5 h-5"></i>
+            </button>
+            <button
+              data-panel-trigger="support"
+              aria-haspopup="dialog"
+              aria-expanded="false"
+              aria-controls="support-panel"
+              aria-label="Support"
+              class="text-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-full p-1"
+            >
+              <i data-lucide="headphones" class="w-5 h-5"></i>
+            </button>
+            <button
+              data-panel-trigger="notifications"
+              aria-haspopup="dialog"
+              aria-expanded="false"
+              aria-controls="notifications-panel"
+              aria-label="Notifications"
+              class="text-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-full p-1"
+            >
+              <i data-lucide="bell" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </header>
+
+        <!-- ---- Desktop top bar ---- -->
+        <header
+          class="hidden lg:flex items-center justify-between px-10 pt-8 pb-2"
+        >
+          <div>
+            <h1 class="font-display text-2xl font-bold">All services</h1>
+            <p class="text-muted text-sm mt-1">
+              Everything you can do with Moniepoint, in one place.
+            </p>
+          </div>
+          <div class="flex items-center gap-4">
+            <button
+              data-theme-toggle
+              aria-label="Switch theme"
+              class="w-10 h-10 rounded-full bg-panel border border-stroke flex items-center justify-center text-muted hover:text-text transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            >
+              <i data-lucide="sun" class="w-5 h-5"></i>
+            </button>
+            <button
+              data-panel-trigger="support"
+              aria-haspopup="dialog"
+              aria-expanded="false"
+              aria-controls="support-panel"
+              aria-label="Support"
+              class="w-10 h-10 rounded-full bg-panel border border-stroke flex items-center justify-center text-muted hover:text-text transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            >
+              <i data-lucide="headphones" class="w-5 h-5"></i>
+            </button>
+            <button
+              data-panel-trigger="notifications"
+              aria-haspopup="dialog"
+              aria-expanded="false"
+              aria-controls="notifications-panel"
+              aria-label="Notifications"
+              class="w-10 h-10 rounded-full bg-panel border border-stroke flex items-center justify-center text-muted hover:text-text transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            >
+              <i data-lucide="bell" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </header>
+
+        <main class="px-4 lg:px-10 pb-28 lg:pb-12 mt-4 lg:mt-6">
+          <!-- Search -->
+          <div class="relative max-w-xl">
+            <i
+              data-lucide="search"
+              class="w-4.5 h-4.5 text-muted absolute left-4 top-1/2 -translate-y-1/2"
+            ></i>
+            <input
+              id="service-search"
+              type="text"
+              placeholder="Search services or settings"
+              class="w-full bg-panel border border-stroke rounded-xl pl-11 pr-4 py-3 text-sm placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-gold"
+            />
+          </div>
+
+          <!-- Category quick-jump chips -->
+          <div
+            id="category-chips"
+            class="flex gap-2 overflow-x-auto no-scrollbar mt-4 pb-1"
+          ></div>
+
+          <!-- No results state -->
+          <div id="no-results" class="hidden text-center py-16">
+            <i
+              data-lucide="search-x"
+              class="w-10 h-10 text-muted mx-auto mb-3"
+            ></i>
+            <p class="font-medium">No matches found</p>
+            <p class="text-sm text-muted mt-1">Try a different search term.</p>
+          </div>
+
+          <!-- Sections render here -->
+          <div id="service-sections" class="mt-2"></div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ============ MOBILE BOTTOM NAV ============ -->
+    <nav
+      class="lg:hidden fixed bottom-0 inset-x-0 bg-panel border-t border-stroke px-2 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] flex justify-around"
+    >
+      <a
+        href="index.html"
+        class="flex flex-col items-center gap-1 px-3 py-1 text-muted focus:outline-none"
+      >
+        <i data-lucide="home" class="w-5 h-5"></i>
+        <span class="text-[11px] font-medium">Home</span>
+      </a>
+      <a
+        href="#"
+        class="flex flex-col items-center gap-1 px-3 py-1 text-muted focus:outline-none"
+      >
+        <i data-lucide="credit-card" class="w-5 h-5"></i>
+        <span class="text-[11px] font-medium">Card</span>
+      </a>
+      <a
+        href="services.html"
+        class="flex flex-col items-center gap-1 px-3 py-1 nav-active focus:outline-none relative"
+      >
+        <i data-lucide="layout-grid" class="w-5 h-5"></i>
+        <span class="text-[11px] font-medium">Services</span>
+        <span
+          class="absolute -top-0.5 right-2 w-6 h-0.5 bg-gold rounded-full"
+        ></span>
+      </a>
+      <a
+        href="#"
+        class="flex flex-col items-center gap-1 px-3 py-1 text-muted focus:outline-none"
+      >
+        <i data-lucide="trophy" class="w-5 h-5"></i>
+        <span class="text-[11px] font-medium">Rewards</span>
+      </a>
+    </nav>
+
+    <!-- ============ PROFILE OFFCANVAS PANEL ============ -->
+    <div
+      id="profile-backdrop"
+      class="hidden fixed inset-0 bg-black/60 z-40 opacity-0 transition-opacity duration-300"
+    ></div>
+
+    <aside
+      id="profile-panel"
+      data-panel="profile"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="profile-panel-title"
+      class="fixed inset-y-0 right-0 z-50 w-full sm:w-[420px] bg-panel translate-x-full transition-transform duration-300 ease-out flex flex-col"
+    >
+      <div
+        class="flex items-center justify-between px-5 pt-5 pb-4 border-b border-stroke shrink-0"
+      >
+        <h2 id="profile-panel-title" class="font-display font-bold text-lg">
+          Your account
+        </h2>
+        <button
+          id="profile-panel-close"
+          data-panel-close
+          aria-label="Close menu"
+          class="w-9 h-9 rounded-full bg-panel2 flex items-center justify-center hover:bg-stroke transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="overflow-y-auto flex-1 px-5 py-5">
+        <div class="flex items-center gap-3">
+          <img
+            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Mary-Ifekam&backgroundColor=182446&backgroundType=solid"
+            alt=""
+            class="w-14 h-14 rounded-full bg-panel2 shrink-0"
+          />
+          <div class="min-w-0">
+            <p class="font-display font-bold truncate">Uzor Mary Ifekam</p>
+            <div class="flex items-center gap-1.5 mt-1">
+              <span
+                class="text-[11px] font-semibold text-gold bg-gold/10 px-1.5 py-0.5 rounded"
+                >Level 3</span
+              >
+              <a
+                href="#"
+                class="text-[11px] text-gold font-medium hover:underline"
+                >Upgrade</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="h-1.5 bg-base rounded-full overflow-hidden">
+            <div class="h-full bg-gold rounded-full" style="width: 60%"></div>
+          </div>
+          <p class="text-[11px] text-muted mt-1.5">60% of the way to Level 4</p>
+        </div>
+        <div class="mt-7">
+          <h3
+            class="text-xs font-semibold text-muted uppercase tracking-wide mb-3"
+          >
+            Quick actions
+          </h3>
+          <div class="grid grid-cols-4 gap-3">
+            <a
+              href="#"
+              class="flex flex-col items-center gap-2 group focus:outline-none"
+            >
+              <span
+                class="w-14 h-14 rounded-2xl bg-panel2 flex items-center justify-center group-hover:bg-stroke transition group-focus-visible:ring-2 group-focus-visible:ring-gold"
+              >
+                <i data-lucide="user" class="w-6 h-6"></i>
+              </span>
+              <span class="text-xs text-center text-muted">Profile</span>
+            </a>
+            <a
+              href="#"
+              class="flex flex-col items-center gap-2 group focus:outline-none"
+            >
+              <span
+                class="w-14 h-14 rounded-2xl bg-panel2 flex items-center justify-center group-hover:bg-stroke transition group-focus-visible:ring-2 group-focus-visible:ring-gold"
+              >
+                <i data-lucide="shield-check" class="w-6 h-6"></i>
+              </span>
+              <span class="text-xs text-center text-muted">Limits</span>
+            </a>
+            <a
+              href="#"
+              class="flex flex-col items-center gap-2 group focus:outline-none"
+            >
+              <span
+                class="w-14 h-14 rounded-2xl bg-panel2 flex items-center justify-center group-hover:bg-stroke transition group-focus-visible:ring-2 group-focus-visible:ring-gold"
+              >
+                <i data-lucide="lock" class="w-6 h-6"></i>
+              </span>
+              <span class="text-xs text-center text-muted">Security</span>
+            </a>
+            <a
+              href="#"
+              data-panel-trigger="notifications"
+              class="flex flex-col items-center gap-2 group focus:outline-none"
+            >
+              <span
+                class="w-14 h-14 rounded-2xl bg-panel2 flex items-center justify-center group-hover:bg-stroke transition group-focus-visible:ring-2 group-focus-visible:ring-gold"
+              >
+                <i data-lucide="bell" class="w-6 h-6"></i>
+              </span>
+              <span class="text-xs text-center text-muted">Alerts</span>
+            </a>
+          </div>
+        </div>
+        <div class="mt-7">
+          <h3
+            class="text-xs font-semibold text-muted uppercase tracking-wide mb-2"
+          >
+            More
+          </h3>
+          <nav class="divide-y divide-stroke border-t border-b border-stroke">
+            <a
+              href="#"
+              class="flex items-center gap-3 py-3.5 text-sm hover:text-gold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded"
+            >
+              <i data-lucide="users" class="w-4 h-4 text-muted"></i>
+              <span class="flex-1">Refer &amp; earn</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-muted"></i>
+            </a>
+            <a
+              href="#"
+              data-panel-trigger="support"
+              class="flex items-center gap-3 py-3.5 text-sm hover:text-gold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded"
+            >
+              <i data-lucide="help-circle" class="w-4 h-4 text-muted"></i>
+              <span class="flex-1">Help &amp; support</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-muted"></i>
+            </a>
+            <a
+              href="#"
+              class="flex items-center gap-3 py-3.5 text-sm hover:text-gold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded"
+            >
+              <i data-lucide="star" class="w-4 h-4 text-muted"></i>
+              <span class="flex-1">Rate this app</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-muted"></i>
+            </a>
+            <a
+              href="#"
+              class="flex items-center gap-3 py-3.5 text-sm hover:text-gold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded"
+            >
+              <i data-lucide="file-text" class="w-4 h-4 text-muted"></i>
+              <span class="flex-1">Terms &amp; privacy policy</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-muted"></i>
+            </a>
+            <a
+              href="#"
+              class="flex items-center gap-3 py-3.5 text-sm hover:text-gold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded"
+            >
+              <i data-lucide="info" class="w-4 h-4 text-muted"></i>
+              <span class="flex-1">About Moniepoint</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-muted"></i>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="px-5 py-4 border-t border-stroke shrink-0">
+        <button
+          class="w-full flex items-center justify-center gap-2 rounded-xl border border-coral/40 text-coral font-semibold py-3 hover:bg-coral/10 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-coral"
+        >
+          <i data-lucide="log-out" class="w-4 h-4"></i> Log out
+        </button>
+      </div>
+    </aside>
+    <!-- ============ SUPPORT OFFCANVAS PANEL ============ -->
+    <aside
+      id="support-panel"
+      data-panel="support"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="support-panel-title"
+      class="fixed inset-y-0 right-0 z-50 w-full sm:w-[420px] bg-panel translate-x-full transition-transform duration-300 ease-out flex flex-col"
+    >
+      <div
+        class="flex items-center justify-between px-5 pt-5 pb-4 border-b border-stroke shrink-0"
+      >
+        <h2 id="support-panel-title" class="font-display font-bold text-lg">
+          Help &amp; Support
+        </h2>
+        <button
+          data-panel-close
+          aria-label="Close menu"
+          class="w-9 h-9 rounded-full bg-panel2 flex items-center justify-center hover:bg-stroke transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="overflow-y-auto flex-1 px-5 py-5">
+        <!-- Chat -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h3
+              class="text-xs font-semibold text-muted uppercase tracking-wide"
+            >
+              Chat
+            </h3>
+            <span
+              class="text-[11px] text-muted bg-panel2 px-2 py-1 rounded-full"
+              >Avg. response: 1 min</span
+            >
+          </div>
+          <div
+            class="bg-panel2 rounded-2xl divide-y divide-stroke overflow-hidden"
+          >
+            <a
+              href="#"
+              class="flex items-center gap-3 px-4 py-3.5 hover:bg-stroke transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-inset"
+            >
+              <span
+                class="w-10 h-10 rounded-full bg-base flex items-center justify-center shrink-0"
+              >
+                <i data-lucide="message-square" class="w-4 h-4 text-gold"></i>
+              </span>
+              <div class="min-w-0">
+                <p class="text-sm font-medium">Support Chat</p>
+                <p class="text-xs text-muted">
+                  Start a conversation on live chat
+                </p>
+              </div>
+            </a>
+            <a
+              href="#"
+              class="flex items-center gap-3 px-4 py-3.5 hover:bg-stroke transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-inset"
+            >
+              <span
+                class="w-10 h-10 rounded-full bg-base flex items-center justify-center shrink-0"
+              >
+                <i data-lucide="message-circle" class="w-4 h-4 text-mint"></i>
+              </span>
+              <div class="min-w-0">
+                <p class="text-sm font-medium">WhatsApp</p>
+                <p class="text-xs text-muted">
+                  Start a conversation on WhatsApp
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Call -->
+        <div class="mt-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3
+              class="text-xs font-semibold text-muted uppercase tracking-wide"
+            >
+              Call
+            </h3>
+            <span
+              class="text-[11px] text-muted bg-panel2 px-2 py-1 rounded-full"
+              >Avg. response: 2 min</span
+            >
+          </div>
+          <div
+            class="bg-panel2 rounded-2xl px-4 py-4 flex items-center justify-between gap-3"
+          >
+            <p class="text-sm font-semibold">+234 201 888 9990</p>
+            <a
+              href="tel:+2342018889990"
+              class="flex items-center gap-1.5 bg-gold/10 text-gold text-sm font-semibold rounded-full px-4 py-2 hover:bg-gold/20 transition shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            >
+              <i data-lucide="phone" class="w-4 h-4"></i> Call
+            </a>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mt-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3
+              class="text-xs font-semibold text-muted uppercase tracking-wide"
+            >
+              Email
+            </h3>
+            <span
+              class="text-[11px] text-muted bg-panel2 px-2 py-1 rounded-full"
+              >Avg. response: 12 hrs</span
+            >
+          </div>
+          <div
+            class="bg-panel2 rounded-2xl px-4 py-4 flex items-center justify-between gap-3"
+          >
+            <p class="text-sm font-semibold truncate">support@moniepoint.com</p>
+            <a
+              href="mailto:support@moniepoint.com"
+              class="flex items-center gap-1.5 bg-gold/10 text-gold text-sm font-semibold rounded-full px-4 py-2 hover:bg-gold/20 transition shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            >
+              <i data-lucide="mail" class="w-4 h-4"></i> Email
+            </a>
+          </div>
+        </div>
+
+        <!-- Support portal -->
+        <div class="mt-6">
+          <h3
+            class="text-xs font-semibold text-muted uppercase tracking-wide mb-3"
+          >
+            Support
+          </h3>
+          <a
+            href="#"
+            class="block bg-panel2 rounded-2xl p-5 relative overflow-hidden hover:bg-stroke transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+          >
+            <h4 class="font-display font-bold text-[1rem] mb-1 max-w-[75%]">
+              Moniepoint Support Portal
+            </h4>
+            <p class="text-sm text-muted max-w-[75%] mb-3">
+              Read articles &amp; FAQs on how to use Moniepoint.
+            </p>
+            <span
+              class="text-gold text-sm font-semibold inline-flex items-center gap-1"
+              >Read now <i data-lucide="chevron-right" class="w-4 h-4"></i
+            ></span>
+            <i
+              data-lucide="book-open"
+              class="w-16 h-16 absolute right-3 bottom-3 text-gold/20"
+            ></i>
+          </a>
+        </div>
+
+        <!-- Social -->
+        <div class="mt-6">
+          <h3
+            class="text-xs font-semibold text-muted uppercase tracking-wide mb-3"
+          >
+            Social media
+          </h3>
+          <div class="bg-panel2 rounded-2xl p-5 text-center">
+            <p class="text-sm text-muted mb-4">
+              Reach out to Moniepoint's support on any of our social media
+              pages.
+            </p>
+            <div class="flex items-center justify-center gap-3">
+              <a
+                href="#"
+                aria-label="X (Twitter)"
+                class="w-10 h-10 rounded-full bg-base flex items-center justify-center hover:bg-stroke transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                ><i data-lucide="at-sign" class="w-4 h-4"></i
+              ></a>
+              <a
+                href="#"
+                aria-label="Instagram"
+                class="w-10 h-10 rounded-full bg-base flex items-center justify-center hover:bg-stroke transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                ><i data-lucide="camera" class="w-4 h-4"></i
+              ></a>
+              <a
+                href="#"
+                aria-label="Facebook"
+                class="w-10 h-10 rounded-full bg-base flex items-center justify-center hover:bg-stroke transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                ><i data-lucide="thumbs-up" class="w-4 h-4"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============ NOTIFICATIONS OFFCANVAS PANEL ============ -->
+    <aside
+      id="notifications-panel"
+      data-panel="notifications"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="notifications-panel-title"
+      class="fixed inset-y-0 right-0 z-50 w-full sm:w-[420px] bg-panel translate-x-full transition-transform duration-300 ease-out flex flex-col"
+    >
+      <div
+        class="flex items-center justify-between px-5 pt-5 pb-4 border-b border-stroke shrink-0"
+      >
+        <h2
+          id="notifications-panel-title"
+          class="font-display font-bold text-lg"
+        >
+          Notifications
+        </h2>
+        <button
+          data-panel-close
+          aria-label="Close menu"
+          class="w-9 h-9 rounded-full bg-panel2 flex items-center justify-center hover:bg-stroke transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div
+        class="flex-1 flex flex-col items-center justify-center px-8 text-center"
+      >
+        <span
+          class="w-20 h-20 rounded-full bg-panel2 flex items-center justify-center mb-4"
+        >
+          <i data-lucide="bell-off" class="w-8 h-8 text-muted"></i>
+        </span>
+        <p class="font-medium">No notifications yet</p>
+        <p class="text-sm text-muted mt-1">
+          We'll let you know when there's something new.
+        </p>
+      </div>
+    </aside>
+
+    <script>
+      // ---- Data ----
+      const serviceSections = [
+        {
+          title: "Send and receive",
+          items: [
+            { label: "Transfer", icon: "arrow-right-left" },
+            { label: "Card", icon: "credit-card" },
+            { label: "Network", icon: "radio" },
+            { label: "Recurring", icon: "repeat" },
+            { label: "USSD", icon: "hash" },
+          ],
+        },
+        {
+          title: "Bills and recharges",
+          items: [
+            { label: "Airtime", icon: "phone-outgoing" },
+            { label: "Data", icon: "smartphone" },
+            { label: "Education", icon: "book-open" },
+            { label: "Electricity", icon: "zap" },
+            { label: "Government", icon: "id-card" },
+            { label: "TV", icon: "tv" },
+            { label: "Association", icon: "users-round" },
+            { label: "Religion", icon: "sparkles" },
+            { label: "Taxes", icon: "building-2" },
+          ],
+        },
+        {
+          title: "Lifestyle",
+          items: [
+            { label: "Betting", icon: "target" },
+            { label: "Gaming", icon: "gamepad-2" },
+            { label: "Utilities", icon: "bookmark" },
+            { label: "Health", icon: "heart-pulse" },
+          ],
+        },
+        { title: "Finance", items: [{ label: "Savings", icon: "piggy-bank" }] },
+        {
+          title: "Accounts and settings",
+          items: [
+            { label: "Statement", icon: "file-text" },
+            { label: "Limits", icon: "gauge" },
+            { label: "Settings", icon: "settings" },
+            { label: "Logout", icon: "log-out", danger: true },
+          ],
+        },
+      ];
+
+      const sectionsEl = document.getElementById("service-sections");
+      const chipsEl = document.getElementById("category-chips");
+      const noResultsEl = document.getElementById("no-results");
+      const searchInput = document.getElementById("service-search");
+
+      function slug(str) {
+        return str.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      }
+
+      // ---- Render sections ----
+      serviceSections.forEach((section) => {
+        const id = slug(section.title);
+        const sectionEl = document.createElement("section");
+        sectionEl.id = id;
+        sectionEl.className = "mt-8 scroll-mt-24";
+        sectionEl.dataset.sectionTitle = section.title;
+
+        const heading = document.createElement("h2");
+        heading.className =
+          "text-sm font-semibold text-muted uppercase tracking-wide mb-3";
+        heading.textContent = section.title;
+        sectionEl.appendChild(heading);
+
+        const grid = document.createElement("div");
+        grid.className = "grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3";
+
+        section.items.forEach((item) => {
+          const tile = document.createElement("a");
+          tile.href = "#";
+          tile.dataset.label = item.label.toLowerCase();
+          tile.className =
+            "flex flex-col items-center gap-2 group focus:outline-none";
+          tile.innerHTML = `
+        <span class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl bg-panel flex items-center justify-center group-hover:bg-panel2 transition group-focus-visible:ring-2 group-focus-visible:ring-gold ${item.danger ? "group-hover:bg-coral/10" : ""}">
+          <i data-lucide="${item.icon}" class="w-6 h-6 lg:w-7 lg:h-7 ${item.danger ? "text-coral" : ""}"></i>
+        </span>
+        <span class="text-xs text-center ${item.danger ? "text-coral font-medium" : "text-muted"}">${item.label}</span>
+      `;
+          grid.appendChild(tile);
+        });
+
+        sectionEl.appendChild(grid);
+        sectionsEl.appendChild(sectionEl);
+
+        // Chip
+        const chip = document.createElement("button");
+        chip.className =
+          "chip shrink-0 px-4 py-2 rounded-full text-xs font-semibold transition";
+        chip.dataset.active = "false";
+        chip.textContent = section.title;
+        chip.addEventListener("click", () => {
+          document
+            .getElementById(id)
+            .scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        chipsEl.appendChild(chip);
+      });
+
+      lucide.createIcons();
+
+      // ---- Highlight active chip on scroll ----
+      const sectionEls = Array.from(
+        document.querySelectorAll("#service-sections > section"),
+      );
+      const chipEls = Array.from(chipsEl.children);
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const idx = sectionEls.indexOf(entry.target);
+              chipEls.forEach(
+                (c, i) => (c.dataset.active = i === idx ? "true" : "false"),
+              );
+            }
+          });
+        },
+        { rootMargin: "-15% 0px -70% 0px" },
+      );
+      sectionEls.forEach((s) => observer.observe(s));
+
+      // ---- Search filter ----
+      searchInput.addEventListener("input", () => {
+        const q = searchInput.value.trim().toLowerCase();
+        let anyVisible = false;
+        sectionEls.forEach((section) => {
+          let sectionHasMatch = false;
+          section.querySelectorAll("a[data-label]").forEach((tile) => {
+            const match = !q || tile.dataset.label.includes(q);
+            tile.classList.toggle("hidden", !match);
+            if (match) sectionHasMatch = true;
+          });
+          section.classList.toggle("hidden", !sectionHasMatch);
+          if (sectionHasMatch) anyVisible = true;
+        });
+        chipsEl.classList.toggle("hidden", q.length > 0);
+        noResultsEl.classList.toggle("hidden", anyVisible || q.length === 0);
+      });
+
+      // ---- Dark / Light theme toggle (shared with index.html) ----
+      (function () {
+        const html = document.documentElement;
+        const toggles = document.querySelectorAll("[data-theme-toggle]");
+
+        function isLight() {
+          return html.getAttribute("data-theme") === "light";
+        }
+
+        function renderToggleIcons() {
+          toggles.forEach((btn) => {
+            btn.innerHTML = isLight()
+              ? '<i data-lucide="moon" class="w-5 h-5"></i>'
+              : '<i data-lucide="sun" class="w-5 h-5"></i>';
+            btn.setAttribute(
+              "aria-label",
+              isLight() ? "Switch to dark theme" : "Switch to light theme",
+            );
+          });
+          lucide.createIcons();
+        }
+
+        toggles.forEach((btn) =>
+          btn.addEventListener("click", () => {
+            if (isLight()) {
+              html.removeAttribute("data-theme");
+              localStorage.setItem("moniepoint-theme", "dark");
+            } else {
+              html.setAttribute("data-theme", "light");
+              localStorage.setItem("moniepoint-theme", "light");
+            }
+            renderToggleIcons();
+          }),
+        );
+
+        renderToggleIcons();
+      })();
+
+      // Offcanvas panels (Profile, Support, Notifications) — share one backdrop, one open at a time
+      (function () {
+        const backdrop = document.getElementById("profile-backdrop");
+        const panels = document.querySelectorAll("[data-panel]");
+        const triggers = document.querySelectorAll("[data-panel-trigger]");
+        let lastFocused = null;
+
+        function openPanel(key, fromBtn) {
+          const target = document.querySelector(`[data-panel="${key}"]`);
+          if (!target) return;
+          lastFocused = fromBtn || document.activeElement;
+          panels.forEach((p) => p.classList.add("translate-x-full"));
+          backdrop.classList.remove("hidden");
+          requestAnimationFrame(() => {
+            backdrop.classList.remove("opacity-0");
+            target.classList.remove("translate-x-full");
+          });
+          document.body.classList.add("overflow-hidden");
+          triggers.forEach((b) =>
+            b.setAttribute(
+              "aria-expanded",
+              b.dataset.panelTrigger === key ? "true" : "false",
+            ),
+          );
+          const closeBtn = target.querySelector("[data-panel-close]");
+          if (closeBtn) closeBtn.focus();
+        }
+
+        function closeAllPanels() {
+          backdrop.classList.add("opacity-0");
+          panels.forEach((p) => p.classList.add("translate-x-full"));
+          document.body.classList.remove("overflow-hidden");
+          triggers.forEach((b) => b.setAttribute("aria-expanded", "false"));
+          setTimeout(() => backdrop.classList.add("hidden"), 300);
+          if (lastFocused) lastFocused.focus();
+        }
+
+        triggers.forEach((btn) =>
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            openPanel(btn.dataset.panelTrigger, btn);
+          }),
+        );
+        document
+          .querySelectorAll("[data-panel-close]")
+          .forEach((btn) => btn.addEventListener("click", closeAllPanels));
+        backdrop.addEventListener("click", closeAllPanels);
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !backdrop.classList.contains("hidden"))
+            closeAllPanels();
+        });
+      })();
+    </script>
+  </body>
+</html>
