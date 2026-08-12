@@ -2,7 +2,7 @@
 
 A front-end redesign of the Moniepoint fintech dashboard, built as a front-end course exercise. The project recreates the mobile app UI closely while also delivering a genuine desktop/web layout — not just a stretched phone screen.
 
-**Live demo:** _add your Vercel URL here after deploying_
+**Live demo:** [_add your Vercel URL here after deploying_](https://moniepointredesign.vercel.app/)
 
 ## Overview
 
@@ -87,7 +87,7 @@ Then visit `http://localhost:5500`.
 
 ## Author
 
-Built by _your name here_ as a front-end course project.
+Built by Destiny Chukuma as a front-end course project.
 
 ## License
 
